@@ -6,6 +6,18 @@ from tkinter.font import Font
 from PIL import Image, ImageTk, ImageDraw
 import math
 
+def paginar_paginas(num_paginas, frame):
+    notebook = ttk.Notebook(frame, style='TNotebook')
+
+    frames = []
+    for i in range(num_paginas):
+        frame = tk.Frame(notebook, background='gray')
+        frames.append(frame)
+        notebook.add(frame, text=f" {i+1}")
+
+    notebook.pack(expand=True, fill="both", side="bottom")
+
+    return frames, notebook
 
 
 def FuncaoListaPedidos(TelaPrincipal):
@@ -37,71 +49,86 @@ def FuncaoListaPedidos(TelaPrincipal):
 
     fonte_Label = Font(size=17, family="Rockwell",weight="bold")
     fonte_Label2 = Font(size=15, family="Rockwell", weight="bold")
-    lista_Pag1 = listas[:20]
+
     QtPaginas = listas["codPedido"].size/20
     QtPaginas = math.ceil(QtPaginas)
     print(QtPaginas)
 
-    Frame_checkbox = tk.Frame(Telatreeview, width=20, height=800, bg="gray")
-    Frame_checkbox.pack(side='left', padx=(25, 0), pady=(0, 0), anchor='nw')
-    Frame_Pedidos = tk.Frame(Telatreeview, width=20, height=800, bg="gray")
-    Frame_Pedidos.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
-    Frame_Sugerido = tk.Frame(Telatreeview, width=20, height=800, bg="gray")
-    Frame_Sugerido.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
-    Frame_Cliente = tk.Frame(Telatreeview, width=20, height=800, bg="gray")
-    Frame_Cliente.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
-    Frame_MARCA = tk.Frame(Telatreeview, width=20, height=800, bg="gray")
-    Frame_MARCA.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
-    label_Titulo_Pedidos = ttk.Label(Frame_Pedidos, text="\nVALOR", width=10, font=fonte_Label2, anchor='center', background='gray')
-    label_Titulo_Pedidos.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
-    label_Titulo_SELECAO = ttk.Label(Frame_checkbox, text="\nPEDIDOS", width=11, font=fonte_Label2, background='gray')
-    label_Titulo_SELECAO.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='center')
-    label_Titulo_Sugerido = ttk.Label(Frame_Sugerido, text="QNT.\nPEÇAS", width=11, font=fonte_Label2, background='gray', anchor='center')
-    label_Titulo_Sugerido.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='center')
-    label_Titulo_cliente = ttk.Label(Frame_Cliente, text="COD.\nCLIENTE", width=11, font=fonte_Label2, background='gray',anchor='center')
-    label_Titulo_cliente.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center')
-    label_Titulo_MARCA = ttk.Label(Frame_MARCA, text="\nMARCA", width=11, font=fonte_Label2, background='gray',anchor='center')
-    label_Titulo_MARCA.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center')
+    frames, notebook = paginar_paginas(QtPaginas, Telatreeview)
 
-    # Crie um estilo personalizado para a Checkbutton
-    style = ttk.Style()
-    style.configure('Custom.TCheckbutton', font=('Rockwell', 17))
+    for i in range(QtPaginas):
+        Frame_checkbox = tk.Frame(frames[i], width=20, height=800, bg="gray")
+        Frame_checkbox.pack(side='left', padx=(25, 0), pady=(0, 0), anchor='nw')
+        Frame_Pedidos = tk.Frame(frames[i], width=20, height=800, bg="gray")
+        Frame_Pedidos.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
+        Frame_Sugerido = tk.Frame(frames[i], width=20, height=800, bg="gray")
+        Frame_Sugerido.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
+        Frame_Cliente = tk.Frame(frames[i], width=20, height=800, bg="gray")
+        Frame_Cliente.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
+        Frame_MARCA = tk.Frame(frames[i], width=20, height=800, bg="gray")
+        Frame_MARCA.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
+        Frame_Data = tk.Frame(frames[i], width=20, height=800, bg="gray")
+        Frame_Data.pack(side='left', padx=(0, 0), pady=(0, 0), anchor='nw')
 
+        label_Titulo_Pedidos = ttk.Label(Frame_Pedidos, text="\nVALOR", width=10, font=fonte_Label2, anchor='center', background='gray')
+        label_Titulo_Pedidos.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
+        label_Titulo_SELECAO = ttk.Label(Frame_checkbox, text="\nPEDIDOS", width=11, font=fonte_Label2, background='gray')
+        label_Titulo_SELECAO.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='center')
+        label_Titulo_Sugerido = ttk.Label(Frame_Sugerido, text="QNT.\nPEÇAS", width=11, font=fonte_Label2, background='gray', anchor='center')
+        label_Titulo_Sugerido.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='center')
+        label_Titulo_cliente = ttk.Label(Frame_Cliente, text="COD.\nCLIENTE", width=11, font=fonte_Label2, background='gray',anchor='center')
+        label_Titulo_cliente.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center')
+        label_Titulo_MARCA = ttk.Label(Frame_MARCA, text="\nMARCA", width=11, font=fonte_Label2, background='gray',anchor='center')
+        label_Titulo_MARCA.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center')
+        label_Titulo_Data = ttk.Label(Frame_Data, text="Data\n Geracao", width=11, font=fonte_Label2, background='gray',anchor='center')
+        label_Titulo_Data.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center')
 
-
-    # Percorra a lista e crie uma label para cada índice
-    for item in range(20):
-        # Obtenha o item da coluna 1 da sublista
-        coluna1 = lista_Pag1["codPedido"][item]
-        coluna2 = lista_Pag1["vlrSugestao"][item]
-        coluna3 = lista_Pag1["codCliente"][item]
-        coluna4 = lista_Pag1["sugerido"][item]
-        coluna5 = lista_Pag1["MARCA"][item]
-        # Crie o nome da label
-        label_name = "{}".format(coluna1)
-        # Crie a label com o item da coluna 1
-        label = ttk.Label(Frame_Pedidos, text='R$  ' + str(coluna2),width=10,font=fonte_Label,anchor='center')
-        label2 = ttk.Label(Frame_Sugerido, text=coluna4,width=10,font=fonte_Label,anchor='center')
-        label3 = ttk.Label(Frame_Cliente, text=str(coluna3), width=10, font=fonte_Label,anchor='center')
-        label4 = ttk.Label(Frame_MARCA, text=str(coluna5), width=10, font=fonte_Label,anchor='center')
-        # Crie o nome do checkbox
-        checkbox_name = "checkbox_{}".format(item)
-        # Crie o checkbox vinculado à respectiva label
-        checkbox = ttk.Checkbutton(Frame_checkbox, text=label_name, command=lambda: print(checkbox_name),style='Custom.TCheckbutton', width=10)
-        checkbox.var = tk.BooleanVar()
-        checkbox.configure(variable=checkbox.var, onvalue=True, offvalue=False)
-        checkbox.configure(command=lambda: print("Checkbox {} status: {}".format(checkbox_name, checkbox.var.get())))
-        checkbox.pack(side='top',padx=(0,0), pady=(0,0), anchor='e')
-        # Adicione a label ao root
-        label.pack(side='top',padx=(0,0), anchor='nw')
-        label2.pack(side='top', padx=(0, 0), anchor='e', fill='both')
-        label3.pack(side='top', padx=(0, 0), anchor='e', fill='both')
-        label4.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+         # Crie um estilo personalizado para a Checkbutton
+        style = ttk.Style()
+        style.configure('Custom.TCheckbutton', font=('Rockwell', 17))
+        ValorInicial = i*20
+        valorFinal = (i+1)*20
+        lista_Pag1 = listas[ValorInicial:valorFinal]
 
 
-        # Dê o nome da label
-        label.name = label_name
-        checkbox.name = checkbox_name
+        # Percorra a lista e crie uma label para cada índice
+
+        for item in range(20):
+                # Obtenha o item da coluna 1 da sublista
+                coluna1 = listas["codPedido"][item]
+                coluna2 = listas["vlrSugestao"][item]
+                coluna3 = listas["codCliente"][item]
+                coluna4 = listas["sugerido"][item]
+                coluna5 = listas["MARCA"][item]
+                coluna6 = listas["DataGeracao"][item]
+                # Crie o nome da label
+                label_name = "{}".format(coluna1)
+                # Crie a label com o item da coluna 1
+                label = ttk.Label(Frame_Pedidos, text='R$  ' + str(coluna2),width=10,font=fonte_Label,anchor='center')
+                label2 = ttk.Label(Frame_Sugerido, text=coluna4,width=10,font=fonte_Label,anchor='center')
+                label3 = ttk.Label(Frame_Cliente, text=str(coluna3), width=10, font=fonte_Label,anchor='center')
+                label4 = ttk.Label(Frame_MARCA, text=str(coluna5), width=10, font=fonte_Label,anchor='center')
+                label5 = ttk.Label(Frame_Data, text=str(coluna6), width=10, font=fonte_Label, anchor='center')
+                # Crie o nome do checkbox
+                checkbox_name = "checkbox_{}".format(item)
+                # Crie o checkbox vinculado à respectiva label
+                checkbox = ttk.Checkbutton(Frame_checkbox, text=label_name, command=lambda: print(checkbox_name),style='Custom.TCheckbutton', width=10)
+                checkbox.var = tk.BooleanVar()
+                checkbox.configure(variable=checkbox.var, onvalue=True, offvalue=False)
+                checkbox.configure(command=lambda: print("Checkbox {} status: {}".format(checkbox_name, checkbox.var.get())))
+                checkbox.pack(side='top',padx=(0,0), pady=(0,0), anchor='e')
+                # Adicione a label ao root
+                label.pack(side='top',padx=(0,0), anchor='nw')
+                label2.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                label3.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                label4.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                label5.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+
+
+
+             # Dê o nome da label
+                label.name = label_name
+                checkbox.name = checkbox_name
 
 
 
