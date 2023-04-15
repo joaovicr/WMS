@@ -18,5 +18,4 @@ def Pesquisa_Nome(matricula):
     conn.close()
     return resultados
 
-
 #Pesquisa_Nome(1414)
