@@ -6,6 +6,10 @@ from tkinter import *
 from tkinter.font import Font
 from PIL import Image, ImageTk, ImageDraw
 import math
+
+import Inserir_Dados
+
+
 #teste git
 
 def paginar_paginas(num_paginas, frame):
@@ -23,12 +27,20 @@ def paginar_paginas(num_paginas, frame):
 
 
 def FuncaoListaPedidos(TelaPrincipal):
+
+
+
     photoDetalha = Image.open("DetalhaPedido.jpg")
     photoDetalha = photoDetalha.resize((100, 30), Image.ANTIALIAS)  # ajustar o tamanho da imagem
     photoDetalha = ImageTk.PhotoImage(photoDetalha)
 
+    photoAtualizar = Image.open("Atualizar.png")
+    photoAtualizar = photoAtualizar.resize((100, 30), Image.ANTIALIAS)  # ajustar o tamanho da imagem
+    photoAtualizar = ImageTk.PhotoImage(photoAtualizar)
+
     listas = FuncoesRetorna.TabelaRetorna('1')
-    listasColaborador = Buscar_Usuario.PesquisaTodosUsuaios()
+    Distribuicao = FuncoesRetorna.Distribuicao('1')
+    listasColaborador2 = Buscar_Usuario.PesquisaTodosUsuaios()
 
     TelaPrincipal.update()
     Tela_Fila = tk.Toplevel(TelaPrincipal)
@@ -63,15 +75,17 @@ def FuncaoListaPedidos(TelaPrincipal):
     TelaDist = tk.Frame(TelaDistcorpo, width=120, height=775, bg="gray")
     TelaDist.pack(side="top", fill="both", expand=True)
 
-    TelaDistDivisao2 = tk.Frame(TelaDist, width=30, height=775, bg="gray")
-    TelaDistDivisao2.pack(side="left", fill="both", expand=False)
+    # PLANEJAMENTO DA TELA DE RESUMO
+    TelaResumo = tk.Frame(TelaDistcorpo, width=120, height=120, bg="blue")
+    TelaResumo.pack(side="top", fill="both", expand=False, padx=(5,5), pady=(0,5))
 
-    TelaDistDivisao3 = tk.Frame(TelaDist, width=70, height=775, bg="red")
-    TelaDistDivisao3.pack(side="left", fill="both", expand=False)
-    TelaDistDivisao4 = tk.Frame(TelaDist, width=70, height=775, bg="green")
-    TelaDistDivisao4.pack(side="left", fill="both", expand=False)
-    TelaDistDivisao5 = tk.Frame(TelaDist, width=70, height=775, bg="red")
-    TelaDistDivisao5.pack(side="left", fill="both", expand=False)
+    TelaResumo1 = tk.Frame(TelaResumo, width=120, height=10, bg="blue")
+    TelaResumo1.pack(side="top", fill="both", expand=True, )
+
+    TelaResumo2 = tk.Frame(TelaResumo, width=120, height=110, bg="blue")
+    TelaResumo2.pack(side="top", fill="both", expand=True, )
+
+
 
     # Obtenha somente os 20 primeiros itens da lista
 
@@ -79,8 +93,19 @@ def FuncaoListaPedidos(TelaPrincipal):
     fonte_Label2 = Font(size=14, family="Rockwell", weight="bold")
     fonte_Label3 = Font(size=14, family="Rockwell",font='blue')
 
+
     labelDistribuicao = tk.Label(TelaDistTitulo,text='DISTRIBUICAO DAS PRE FATURAS', font=fonte_Label, background='white')
     labelDistribuicao.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='center',fill='both')
+
+    labelResumo = tk.Label(TelaResumo1,text='RESUMO', font=fonte_Label, background='white')
+    labelResumo.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='s', fill='both')
+
+    labelResumoCorpo = tk.Label(TelaResumo2,text='Total Pçs Retorna:', font=fonte_Label2, background='blue', highlightcolor='white',foreground='white' )
+    labelResumoCorpo.pack(side='top', anchor='nw' )
+    labelResumoCorpo2 = tk.Label(TelaResumo2,text='Paco:', font=fonte_Label3, background='blue', highlightcolor='white',foreground='white' )
+    labelResumoCorpo2.pack(side='top', anchor='nw' )
+    labelResumoCorpo3 = tk.Label(TelaResumo2,text='Mpollo:', font=fonte_Label3, background='blue', highlightcolor='white',foreground='white' )
+    labelResumoCorpo3.pack(side='top', anchor='nw')
 
     QtPaginas = listas["codPedido"].size/20
     QtPaginas = math.ceil(QtPaginas)
@@ -88,26 +113,71 @@ def FuncaoListaPedidos(TelaPrincipal):
 
     frames, notebook = paginar_paginas(QtPaginas, Telatreeview)
 
-    #ACRESCENTANDO OS LABEL NA TELA DE DISTRIBUICAO
+
+    TelaDistDivisao2 = tk.Frame(TelaDist, width=30, height=775, bg="gray")
+    TelaDistDivisao2.pack(side="left", fill="both", expand=False)
+
+    TelaDistDivisao3 = tk.Frame(TelaDist, width=70, height=775, bg="gray")
+    TelaDistDivisao3.pack(side="left", fill="both", expand=False)
+    TelaDistDivisao4 = tk.Frame(TelaDist, width=70, height=775, bg="gray")
+    TelaDistDivisao4.pack(side="left", fill="both", expand=False)
+    TelaDistDivisao5 = tk.Frame(TelaDist, width=70, height=775, bg="gray")
+    TelaDistDivisao5.pack(side="left", fill="both", expand=False)
+    # ACRESCENTANDO OS LABEL NA TELA DE DISTRIBUICAO
     labelNomes = tk.Label(TelaDistDivisao2, text='\nNOME', font=fonte_Label,
-                                 background='gray')
+                              background='gray')
     labelNomes.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
     labelTotalPecas = tk.Label(TelaDistDivisao3, text="TOTAL\n Pç's", font=fonte_Label,
-                          background='gray')
+                                   background='gray')
     labelTotalPecas.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
     labelQtdPedidos = tk.Label(TelaDistDivisao4, text="Qtd\n Pedidos", font=fonte_Label,
-                               background='gray')
+                                   background='gray')
     labelQtdPedidos.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
     labelMediaPedidos = tk.Label(TelaDistDivisao5, text="Média\nPç's Pedido", font=fonte_Label,
-                               background='gray')
+                                     background='gray')
     labelMediaPedidos.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
+
+    labels = []
+    labelsTotal = []
+    labelsPedidos = []
+    labelsMedia = []
+
     try:
-        for i in range(listasColaborador.size):
-            ColunaNome = listasColaborador['nome'][i]
-            label_Nome = tk.Label(TelaDistDivisao2,text=ColunaNome, width=18,font=fonte_Label2,bg='white',anchor='nw' )
-            label_Nome.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='nw')
+            for i in range(Distribuicao.size):
+                ColunaNome = Distribuicao['nome'][i]
+                ColunaTotal = Distribuicao['total_peças'][i]
+                ColunaQtd = Distribuicao['pedido'][i]
+                ColunaMedia = Distribuicao['media'][i]
+
+                label_nameRenomear = f"label_{i}"
+                label_Nome = tk.Label(TelaDistDivisao2,text=ColunaNome, width=18,font=fonte_Label2,bg='white',anchor='nw' )
+                label_Nome.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='nw')
+
+                labels.append(label_Nome)
+                locals()[label_nameRenomear] = label_Nome
+
+                label_Nome_TotalPecasRenomear = f"label_{i}"
+                label_Nome_TotalPecas= tk.Label(TelaDistDivisao3,text=ColunaTotal, width=3,font=fonte_Label2,bg='white',anchor='center' )
+                label_Nome_TotalPecas.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center',fill='both')
+                labelsTotal.append(label_Nome_TotalPecas)
+                locals()[label_Nome_TotalPecasRenomear] = label_Nome_TotalPecas
+
+                label_Nome_qtdPedidosRenomear = f"label_{i}"
+                label_Nome_qtdPedidos= tk.Label(TelaDistDivisao4,text=ColunaQtd, width=3,font=fonte_Label2,bg='white',anchor='center' )
+                label_Nome_qtdPedidos.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center',fill='both')
+                labelsPedidos.append(label_Nome_qtdPedidos)
+                locals()[label_Nome_TotalPecasRenomear] = label_Nome_qtdPedidos
+
+                label_Nome_mediaRenomear = f"label_{i}"
+                label_Nome_media= tk.Label(TelaDistDivisao5,text=ColunaMedia, width=3,font=fonte_Label2,bg='white',anchor='center' )
+                label_Nome_media.pack(side='top', padx=(0, 0), pady=(0, 0),anchor='center',fill='both')
+                labelsMedia.append(label_Nome_media)
+                locals()[label_Nome_mediaRenomear] = label_Nome_media
+
     except:
-        print('segue o baile')
+            print('segue o baile')
+
+
     #ACRESCENTANDO OS LABEL NA TELA DE PEDIDOS A SEPARTAR
     for i in range(QtPaginas):
         Frame_checkbox = tk.Frame(frames[i], width=20, height=800, bg="gray")
@@ -152,44 +222,69 @@ def FuncaoListaPedidos(TelaPrincipal):
         # Percorra a lista e crie uma label para cada índice
         try:
             for item in range(22):
-                    # Obtenha o item da coluna 1 da sublista
-                    coluna1 = listas["codPedido"][item+i*22]
-                    coluna2 = listas["vlrSugestao"][item+i*22]
-                    coluna3 = listas["codCliente"][item+i*22]
-                    coluna4 = listas["sugerido"][item+i*22]
-                    coluna5 = listas["MARCA"][item+i*22]
-                    coluna6 = listas["DataGeracao"][item+i*22]
-                    # Crie o nome da label
-                    label_name = "{}".format(coluna1)
-                    # Crie a label com o item da coluna 1
-                    label = ttk.Label(Frame_Pedidos, text='R$  ' + str(coluna2),width=10,font=fonte_Label,anchor='center')
-                    label2 = ttk.Label(Frame_Sugerido, text=coluna4,width=10,font=fonte_Label,anchor='center')
-                    label3 = ttk.Label(Frame_Cliente, text=str(coluna3), width=10, font=fonte_Label,anchor='center')
-                    label4 = ttk.Label(Frame_MARCA, text=str(coluna5), width=10, font=fonte_Label,anchor='center')
-                    label5 = ttk.Label(Frame_Data, text=str(coluna6), width=10, font=fonte_Label, anchor='center')
+                def ligarFuncao(combo, codPedido, qtdePedida):
+                    def ligar(event):
+                        # Faça algo aqui quando o Combobox for selecionado
+                        print(f"Item selecionado: {combo.get()} coluna1={codPedido}")
+                        Inserir_Dados.AtribuirPedido(codPedido,combo.get(),qtdePedida)
 
-                    # Crie o nome do checkbox
-                    checkbox_name = "checkbox_{}".format(item)
-                    # Crie o checkbox vinculado à respectiva label
-                    checkbox = ttk.Checkbutton(Frame_checkbox, text=label_name, command=lambda: print(checkbox_name),style='Custom.TCheckbutton', width=10)
-                    checkbox.var = tk.BooleanVar()
-                    checkbox.configure(variable=checkbox.var, onvalue=True, offvalue=False)
-                    checkbox.configure(command=lambda: print("Checkbox {} status: {}".format(checkbox_name, checkbox.var.get())))
-                    checkbox.pack(side='top',padx=(0,0), pady=(0,0), anchor='e')
-                    # Adicione a label ao root
-                    label.pack(side='top',padx=(0,0), anchor='nw')
-                    label2.pack(side='top', padx=(0, 0), anchor='e', fill='both')
-                    label3.pack(side='top', padx=(0, 0), anchor='e', fill='both')
-                    label4.pack(side='top', padx=(0, 0), anchor='e', fill='both')
-                    label5.pack(side='top', padx=(0, 0), anchor='e', fill='both')
-                    situacao = listasColaborador['nome'].tolist()
+                        AtualizanrDistribuicao = FuncoesRetorna.Distribuicao('1')
+                        print(AtualizanrDistribuicao['nome'].size)
+                        for i in range(AtualizanrDistribuicao['nome'].size):
+                            ColunaTotal = AtualizanrDistribuicao['total_peças'][i]
+                            labelsTotal[i].config(text=ColunaTotal)
+                            ColunaPedidos = AtualizanrDistribuicao['pedido'][i]
+                            labelsPedidos[i].config(text=ColunaPedidos)
+                            ColunaMedia = AtualizanrDistribuicao['media'][i]
+                            labelsMedia[i].config(text=ColunaMedia)
 
-                    Combobox_Situacao = ttk.Combobox(Frame_Colabor, values=situacao, font=fonte_Label3, width=19)
-                    Combobox_Situacao.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
 
-                    # Dê o nome da label
-                    label.name = label_name
-                    checkbox.name = checkbox_name
+                    return ligar
+
+                # Obtenha o item da coluna 1 da sublista
+                coluna1 = listas["codPedido"][item+i*22]
+                coluna2 = listas["vlrSugestao"][item+i*22]
+                coluna3 = listas["codCliente"][item+i*22]
+                coluna4 = listas["sugerido"][item+i*22]
+                coluna5 = listas["MARCA"][item+i*22]
+                coluna6 = listas["DataGeracao"][item+i*22]
+                # Crie o nome da label
+                label_name = "{}".format(coluna1)
+                # Crie a label com o item da coluna 1
+                label = ttk.Label(Frame_Pedidos, text='R$  ' + str(coluna2),width=10,font=fonte_Label,anchor='center')
+                label2 = ttk.Label(Frame_Sugerido, text=coluna4,width=10,font=fonte_Label,anchor='center')
+                label3 = ttk.Label(Frame_Cliente, text=str(coluna3), width=10, font=fonte_Label,anchor='center')
+                label4 = ttk.Label(Frame_MARCA, text=str(coluna5), width=10, font=fonte_Label,anchor='center')
+                label5 = ttk.Label(Frame_Data, text=str(coluna6), width=10, font=fonte_Label, anchor='center')
+
+                # Crie o nome do checkbox
+                checkbox_name = "checkbox_{}".format(item)
+                # Crie o checkbox vinculado à respectiva label
+                checkbox = ttk.Checkbutton(Frame_checkbox, text=label_name, command=lambda: print(checkbox_name),style='Custom.TCheckbutton', width=10)
+                checkbox.var = tk.BooleanVar()
+                checkbox.configure(variable=checkbox.var, onvalue=True, offvalue=False)
+                checkbox.configure(command=lambda: print("Checkbox {} status: {}".format(checkbox_name, checkbox.var.get())))
+                checkbox.pack(side='top',padx=(0,0), pady=(0,0), anchor='e')
+                # Adicione a label ao root
+                label.pack(side='top',padx=(0,0), anchor='nw')
+                label2.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                label3.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                label4.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                label5.pack(side='top', padx=(0, 0), anchor='e', fill='both')
+                situacao = listasColaborador2['nome'].tolist()
+
+                combo_name = f"combo_{coluna1}"
+                combo = ttk.Combobox(Frame_Colabor, values=situacao, font=fonte_Label3, width=19)
+                padrao = listas["codcolaborador"][item+i*22]
+                combo.set(padrao)
+                combo.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='nw')
+                combo.bind("<<ComboboxSelected>>", ligarFuncao(combo,coluna1,coluna4))
+                locals()[combo_name] = combo
+
+
+                # Dê o nome da label
+                label.name = label_name
+                checkbox.name = checkbox_name
 
         except:
             print("segue o baile")
@@ -205,9 +300,24 @@ def FuncaoListaPedidos(TelaPrincipal):
 
 
 
+    def atualizar():
+        print('teste')
+        AtualizanrDistribuicao = FuncoesRetorna.Distribuicao('1')
+        AtualizanrDistribuicao2 = Buscar_Usuario.PesquisaTodosUsuaios()
+        for i in range(AtualizanrDistribuicao2.size):
+            ColunaTotal = AtualizanrDistribuicao['total_peças'][i]
+            labelsTotal[i].config(text=ColunaTotal)
 
-    botaoDetalha = Button(TelaBaixo, image=photoDetalha, background="royalblue")
-    botaoDetalha.pack(anchor='w', padx=(10,0))
+
+    botaoDetalha = Button(TelaBaixo, image=photoDetalha, background="royalblue", command= atualizar)
+    botaoDetalha.pack(anchor='w', padx=(10, 0))
+
+        # aqui você pode adicionar os widgets que deseja ao TelaDist
+
+
+
+    #botaoAtualizar = Button(BordaCima, image=photoAtualizar, background="royalblue", command= atualizar)
+    #botaoAtualizar.pack(anchor='e', padx=(0,0))
 
 
     Tela_Fila.protocol("WM_DELETE_WINDOW", lambda: voltar_tela1(TelaPrincipal, Tela_Fila))
