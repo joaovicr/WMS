@@ -86,26 +86,50 @@ def FuncaoListaPedidos(TelaPrincipal):
     TelaResumo2.pack(side="top", fill="both", expand=True, )
 
 
+    TelaResumo2_1 = tk.Frame(TelaResumo2, width=70, height=110, bg="blue")
+    TelaResumo2_1.pack(side="left", expand=True ,fill="both")
+
+    TelaResumo2_2 = tk.Frame(TelaResumo2, width=90, height=110, bg="blue")
+    TelaResumo2_2.pack(side="left", expand=True,fill="both" )
+
+    TelaResumo2_3 = tk.Frame(TelaResumo2, width=10, height=110, bg="blue")
+    TelaResumo2_3.pack(side="left", expand=True,fill="both" )
+
 
     # Obtenha somente os 20 primeiros itens da lista
 
     fonte_Label = Font(size=16, family="Rockwell",weight="bold")
     fonte_Label2 = Font(size=14, family="Rockwell", weight="bold")
     fonte_Label3 = Font(size=14, family="Rockwell",font='blue')
+    fonte_Label4 = Font(size=11, family="Rockwell", font='blue')
 
 
     labelDistribuicao = tk.Label(TelaDistTitulo,text='DISTRIBUICAO DAS PRE FATURAS', font=fonte_Label, background='white')
     labelDistribuicao.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='center',fill='both')
 
     labelResumo = tk.Label(TelaResumo1,text='RESUMO', font=fonte_Label, background='white')
-    labelResumo.pack(side='top', padx=(0, 0), pady=(0, 0), anchor='s', fill='both')
+    labelResumo.pack(side='top', padx=(0, 0), pady=(0, 0),fill='both')
 
-    labelResumoCorpo = tk.Label(TelaResumo2,text='Total Pçs Retorna:', font=fonte_Label2, background='blue', highlightcolor='white',foreground='white' )
-    labelResumoCorpo.pack(side='top', anchor='nw' )
-    labelResumoCorpo2 = tk.Label(TelaResumo2,text='Paco:', font=fonte_Label3, background='blue', highlightcolor='white',foreground='white' )
-    labelResumoCorpo2.pack(side='top', anchor='nw' )
-    labelResumoCorpo3 = tk.Label(TelaResumo2,text='Mpollo:', font=fonte_Label3, background='blue', highlightcolor='white',foreground='white' )
-    labelResumoCorpo3.pack(side='top', anchor='nw')
+    totalRetrona = listas["sugerido"].sum()
+    totalRetronaPACO = listas[listas["MARCA"] == 'PACO']
+    totalRetronaPACO =totalRetronaPACO["sugerido"].sum()
+    totalRetronaMpollo = listas[listas["MARCA"] == 'M.POLLO']
+    totalRetronaMpollo =totalRetronaMpollo["sugerido"].sum()
+
+    labelResumoCorpo = tk.Label(TelaResumo2_1,text='Total\nPçs Retorna:',font=fonte_Label2, background='blue',foreground='white',width=5,anchor='center', border=True)
+    labelResumoCorpo.pack(side='top', anchor='e', fill='both' )
+    labelResumoCorpo2 = tk.Label(TelaResumo2_1,text='Paco:', font=fonte_Label3, background='blue', foreground='white',anchor='e' )
+    labelResumoCorpo2.pack(side='top', anchor='e',fill='both'  )
+    labelResumoCorpo3 = tk.Label(TelaResumo2_1,text='Mpollo:', font=fonte_Label3, background='blue',foreground='white',anchor='e' )
+    labelResumoCorpo3.pack(side='top', anchor='e',fill='both' )
+
+    labelResumoCorpo_1 = tk.Label(TelaResumo2_2,text=f" \n{totalRetrona} Pçs/", font=fonte_Label, background='blue',foreground='white',anchor='w' )
+    labelResumoCorpo_1.pack(side='top', anchor='w',fill='both' )
+    labelResumoCorpo2_1 = tk.Label(TelaResumo2_2,text=f" {totalRetronaPACO} Pçs/", font=fonte_Label4, background='blue',foreground='white',anchor='w' )
+    labelResumoCorpo2_1.pack(side='top', anchor='w',fill='both' )
+    labelResumoCorpo2_1 = tk.Label(TelaResumo2_2,text=f" {totalRetronaMpollo} Pçs/", font=fonte_Label4, background='blue',foreground='white',anchor='w' )
+    labelResumoCorpo2_1.pack(side='top', anchor='w',fill='both' )
+
 
     QtPaginas = listas["codPedido"].size/20
     QtPaginas = math.ceil(QtPaginas)
