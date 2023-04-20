@@ -81,6 +81,11 @@ def Distribuicao2(empresa):
     return matriz_resultados
 
 x = TabelaRetorna('1')
+x = x[x["MARCA"] == 'PACO']
+x = x['sugerido'].sum()
+#totalRetronaPACO =listas["sugerido"].sum()
+
+    #totalRetronaPACO =listas["sugerido"].sum()
 print(x)
 # Finaliza a contagem do tempo de execução
 #fim = time.perf_counter()
