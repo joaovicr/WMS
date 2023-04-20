@@ -246,6 +246,7 @@ def Pesquisa_Reduzido_TAG(TAG):
     resultados = []
 
     for row in cursor:
+
         resultados.append([row[0]])
         resultados = str(resultados[0][0])
     print(resultados)
