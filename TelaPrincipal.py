@@ -257,15 +257,4 @@ def Tela_Principal():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #ConexaoTags.ConexaoTAGS()
