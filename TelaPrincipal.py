@@ -220,7 +220,6 @@ def Tela_Principal():
 
 
 
-
     botaoACESSAR = ttk.Button(TelaLista2, text='Acessar', command=Acessar,style='Hidden.TButton'  )
     botaoACESSAR.pack( side='top', anchor='center', fill='none', pady=50)
 
