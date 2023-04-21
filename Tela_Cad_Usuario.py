@@ -45,7 +45,7 @@ def Funcao_Cadastro(TelaPrincipal):
 
 
     label_Codigo = tk.Label(Tela_Labels, text="Código:   ", bg="Gray", font=fonte_Labels)
-    label_Codigo.pack(side='top', padx=(0, 0), pady=(250, 0),anchor='e')
+    label_Codigo.pack(side='top', padx=(0, 0), pady=(150, 0),anchor='e')
 
     label_Nome = tk.Label(Tela_Labels, text="Nome:     ", bg="Gray", font=fonte_Labels)
     label_Nome.pack(side='top', padx=(0, 0), pady=(20, 0), anchor='e')
@@ -56,8 +56,11 @@ def Funcao_Cadastro(TelaPrincipal):
     label_Situacao = tk.Label(Tela_Labels, text="Situação:", bg="Gray", font=fonte_Labels)
     label_Situacao.pack(side='top', padx=(0, 0), pady=(20, 0), anchor='e')
 
+    label_Funcao = tk.Label(Tela_Labels, text="Função:", bg="Gray", font=fonte_Labels)
+    label_Funcao.pack(side='top', padx=(0, 0), pady=(20, 0), anchor='e')
+
     Entry_Codigo = tk.Entry(Tela_entrys, width=15, font=fonte_Entrys, borderwidth=2)
-    Entry_Codigo.pack(side='top', padx=(0, 0), pady=(254, 0), anchor='w')
+    Entry_Codigo.pack(side='top', padx=(0, 0), pady=(150, 0), anchor='w')
 
     Entry_Nome = tk.Entry(Tela_entrys, width=35, font=fonte_Entrys, borderwidth=2)
     Entry_Nome.pack(side='top', padx=(0, 0), pady=(20, 0), anchor='w')
@@ -70,9 +73,13 @@ def Funcao_Cadastro(TelaPrincipal):
 
 
     situacao = ["ATIVO", "INATIVO"]
+    funcao = ["ADMINISTRADOR", "OPERAÇÃO"]
 
     Combobox_Situacao = ttk.Combobox(Tela_entrys, values=situacao, font=fonte_Entrys,width=19)
     Combobox_Situacao.pack(side='top', padx=(0, 0), pady=(15, 0), anchor='w')
+
+    Combobox_funcao = ttk.Combobox(Tela_entrys, values=funcao, font=fonte_Entrys, width=19)
+    Combobox_funcao.pack(side='top', padx=(0, 0), pady=(15, 0), anchor='w')
 
 
 
@@ -89,21 +96,29 @@ def Funcao_Cadastro(TelaPrincipal):
             Entry_Codigo.focus_set()
         else:
             Entry_Nome.focus_set()
+            Codigo = Entry_Codigo.get()
             Codigo = int(Codigo)
             CodigoUsado = Funcoes.PesquisaNomeColaborador(Codigo)
             NomeUsado = Funcoes.PesquisaNomeColaborador(Codigo)
             SenhaUsada = Funcoes.PesquisaSenhaColaborador(Codigo)
             SituacaoUsada = Funcoes.PesquisaSituacaoColaborador(Codigo)
+            FuncaoUsada = Funcoes.PesquisasFuncaoColaborador(Codigo)
         if not CodigoUsado:
             Entry_Nome.delete(0,999999)
             Entry_Senha.delete(0, 999999)
             Combobox_Situacao.delete(0, 999999)
+            Combobox_funcao.delete(0, 999999)
             Entry_Nome.focus_set()
         else:
+            Entry_Nome.delete(0, 999999)
+            Entry_Senha.delete(0, 999999)
+            Combobox_Situacao.delete(0, 999999)
+            Combobox_funcao.delete(0, 999999)
             Entry_Nome.insert(0, NomeUsado)
             Entry_Senha.insert(0,SenhaUsada)
             Combobox_Situacao.insert(0,SituacaoUsada)
-            Combobox_Situacao.focus_set()
+            Combobox_funcao.insert(0,FuncaoUsada)
+            Combobox_funcao.focus_set()
     Entry_Codigo.bind("<Return>", Consultar_Codigo)
 
 
@@ -146,30 +161,34 @@ def Funcao_Cadastro(TelaPrincipal):
         Nome = Entry_Nome.get()
         Senha = Entry_Senha.get()
         Situacao = Combobox_Situacao.get()
-        CodigoUsado = Funcoes.PesquisaNomeColaborador(Codigo)
-        if not Situacao or not Senha or not Nome or not Codigo:
+        Funcao = Combobox_funcao.get()
+
+        if not Situacao or not Senha or not Nome or not Codigo or not Funcao:
             tela_msgbox = tk.Toplevel(TelaPrincipal)
             tela_msgbox.overrideredirect(True)
             tela_msgbox.geometry('0x0+{}+{}'.format(900, 500))
             tela_msgbox.title("Mensagem")
-            messagebox.showinfo("Campo em Branco", "Favor preencha todos os campos!".format(Situacao),
-                                parent=tela_msgbox)
+            messagebox.showinfo("Campo em Branco", "Favor preencha todos os campos!".format(Situacao, Funcao),parent=tela_msgbox)
             tela_msgbox.destroy()
             Combobox_Situacao.focus_set()
         else:
+            Codigo = int(Codigo)
+            CodigoUsado = Funcoes.PesquisaNomeColaborador(Codigo)
             if not CodigoUsado:
-                    Inserir_Dados.Funcao_Inserir_Usuarios(Codigo, Nome, Senha, Situacao)
+                    Inserir_Dados.Funcao_Inserir_Usuarios(Codigo, Nome, Senha, Situacao, Funcao)
                     Entry_Codigo.delete(0, 999999)
                     Entry_Nome.delete(0, 999999)
                     Entry_Senha.delete(0, 999999)
                     Combobox_Situacao.delete(0, 999999)
+                    Combobox_funcao.delete(0, 999999)
                     Entry_Codigo.focus_set()
             else:
-                Inserir_Dados.Funcao_Atualizar_Usuarios(Codigo, Nome, Senha, Situacao)
+                Inserir_Dados.Funcao_Atualizar_Usuarios(Codigo, Nome, Senha, Situacao, Funcao)
                 Entry_Codigo.delete(0, 999999)
                 Entry_Nome.delete(0, 999999)
                 Entry_Senha.delete(0, 999999)
                 Combobox_Situacao.delete(0, 999999)
+                Combobox_funcao.delete(0, 999999)
                 Entry_Codigo.focus_set()
 
 

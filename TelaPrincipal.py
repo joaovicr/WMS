@@ -20,7 +20,7 @@ def Tela_Principal():
 
     fonte_Titulo = Font(size=26, family="Rockwell", weight="bold")
     fonte_Label = Font(size=22, family="Rockwell", weight="bold")
-    fonte_Label_Erro = Font(size=22, family="Rockwell", weight="bold")
+    fonte_Label_Erro = Font(size=16, family="Rockwell", weight="bold")
 
     # CRIANDO OS FRAMES
     BordaCima = tk.Frame(TelaInicial,width=50, height=25, bg="royalblue")
@@ -29,7 +29,7 @@ def Tela_Principal():
 
     # CRIANDO AS LABELS
     label_Titulo_Tela = tk.Label(BordaCima, text="SISTEMA WMS - CONTROLE DE ESTOQUE",bg="royalblue",font=fonte_Titulo)
-    label_Titulo_Tela.pack()
+    label_Titulo_Tela.pack(side='left', anchor='e', padx=(400,300))
 
     TelaBaixo = tk.Frame(TelaInicial,width=500, height=100, bg="darkgray")
     TelaBaixo.pack(side="top", fill="both", expand=False)
@@ -56,24 +56,28 @@ def Tela_Principal():
     # ALTERAÇÕES DE FONTES
 
 
-    labelERRO = tk.Label(TelaLista1_0, bg="darkgray", font=fonte_Label_Erro, fg="darkgray")
+    labelERRO = tk.Label(TelaLista1_0, bg="darkgray", font=fonte_Label, fg="darkgray")
     labelERRO.pack(side='bottom', anchor='center', padx=(10, 0), pady=(10, 0))
     def mudarCor():
-        labelERRO.configure(bg="firebrick", fg="white", text="Preencha todos os campos!", bd=2, relief="groove")  # Mudando a cor da Label para vermelho após 1 segundo
+        labelERRO.configure(bg="firebrick", fg="white", text="Preencha todos os campos!", bd=2, relief="groove", font=fonte_Label_Erro)  # Mudando a cor da Label para vermelho após 1 segundo
         labelERRO.after(5000, lambda: labelERRO.configure(bg="darkgray", fg="darkgray", bd=0, relief="flat"))  # Voltando a cor original após 5 segundos
 
     def UsuarioNaoEncontrado():
-        labelERRO.configure(bg="firebrick", fg="white", text="Usuário não Encontrado!", bd=2, relief="groove")  # Mudando a cor da Label para vermelho após 1 segundo
+        labelERRO.configure(bg="firebrick", fg="white", text="Usuário não Encontrado!", bd=2, relief="groove", font=fonte_Label_Erro)  # Mudando a cor da Label para vermelho após 1 segundo
         labelERRO.after(5000, lambda: labelERRO.configure(bg="darkgray", fg="darkgray", bd=0, relief="flat"))  # Voltando a cor original após 5 segundos
 
     def SenhaNaoEncontrado():
-        labelERRO.configure(bg="firebrick", fg="white", text="Senha Inválida!", bd=2, relief="groove")  # Mudando a cor da Label para vermelho após 1 segundo
+        labelERRO.configure(bg="firebrick", fg="white", text="Senha Inválida!", bd=2, relief="groove", font=fonte_Label_Erro)  # Mudando a cor da Label para vermelho após 1 segundo
         labelERRO.after(5000, lambda: labelERRO.configure(bg="darkgray", fg="darkgray", bd=0, relief="flat"))  # Voltando a cor original após 5 segundos
 
-    labelNomeLogin = tk.Label(TelaLista1_1, text="Usuário:",bg="royalblue",font=fonte_Label)
+    def UsuarioComLetra():
+        labelERRO.configure(bg="firebrick", fg="white", text="Digite sua Matrícula, Apenas Números!", bd=2,relief="groove", font=fonte_Label_Erro)  # Mudando a cor da Label para vermelho após 1 segundo
+        labelERRO.after(5000, lambda: labelERRO.configure(bg="darkgray", fg="darkgray", bd=0,relief="flat"))  # Voltando a cor original após 5 segundos
+
+    labelNomeLogin = tk.Label(TelaLista1_1, text="Usuário:",bg="royalblue",font=fonte_Label, width=10)
     labelNomeLogin.pack(side='top', padx=(0, 0), pady=(10, 0), anchor='e')
 
-    labelSenhaLogin = tk.Label(TelaLista1_1, text="Senha:",bg="royalblue",font=fonte_Label)
+    labelSenhaLogin = tk.Label(TelaLista1_1, text="Senha:",bg="royalblue",font=fonte_Label, width=10)
     labelSenhaLogin.pack(side='top', padx=(0, 0), pady=(20, 0), anchor='e')
 
     Entry_Nome = tk.Entry(TelaLista1_2, width=20, font=fonte_Label, borderwidth=2)
@@ -108,7 +112,7 @@ def Tela_Principal():
 
     # Criar estilo personalizado com um layout vazio para o botão
     style = ttk.Style()
-    style.configure('Hidden.TButton', padding=0, relief='flat', background='white', layout=[], font=fonte_Label)
+    style.configure('Hidden.TButton', padding=0, relief='flat', background='royalblue', layout=[], font=fonte_Label)
 
 
 
@@ -132,13 +136,18 @@ def Tela_Principal():
             Entry_Nome.delete(0, END)
             Entry_Nome.focus_set()
         else:
-            CapturarNome = Funcoes.PesquisaNomeColaboradorAtivo("ATIVO", CapturarCodigo)
-            if not CapturarNome:
-                UsuarioNaoEncontrado()
+            if not CapturarCodigo.isdigit():
+                UsuarioComLetra()
                 Entry_Nome.delete(0, END)
                 Entry_Nome.focus_set()
             else:
-                Entry_Senha.focus_set()
+                CapturarNome = Funcoes.PesquisaNomeColaboradorAtivo("ATIVO", CapturarCodigo)
+                if not CapturarNome:
+                    UsuarioNaoEncontrado()
+                    Entry_Nome.delete(0, END)
+                    Entry_Nome.focus_set()
+                else:
+                    Entry_Senha.focus_set()
 
     Entry_Nome.bind("<Return>", VerificaNome)
 
@@ -211,6 +220,7 @@ def Tela_Principal():
 
 
 
+
     botaoACESSAR = ttk.Button(TelaLista2, text='Acessar', command=Acessar,style='Hidden.TButton'  )
     botaoACESSAR.pack( side='top', anchor='center', fill='none', pady=50)
 
@@ -239,18 +249,8 @@ def Tela_Principal():
         Entry_Senha.delete(0, END)
         Entry_Nome.focus_set()
 
-
-    menu_bar = tk.Menu(TelaInicial)
-    TelaInicial.config(menu=menu_bar)
-
-    file_menu = tk.Menu(menu_bar, tearoff=0)
-    file_menu.add_command(label="Abrir")
-    file_menu.add_command(label="Salvar")
-    file_menu.add_separator()
-    file_menu.add_command(label="Sair", command=voltar)
-
-    menu_bar.add_cascade(label="Arquivo", menu=file_menu)
-
+    botaoSair = ttk.Button(BordaCima, text='Sair', command=voltar)
+    botaoSair.pack(side='left', anchor='e', pady=0)
 
 
 

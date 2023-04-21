@@ -22,14 +22,14 @@ def Funcao_Inserir (Usuario, Codigo_Barras, CodReduzido, Endereco, Engenharia, D
 
 
 
-def Funcao_Inserir_Usuarios (Codigo, Nome, Senha, Situacao):
+def Funcao_Inserir_Usuarios (Codigo, Nome, Senha, Situacao, Funcao):
 
     conn =psycopg2.connect( host="wmsbd.cyiuowfro4wv.sa-east-1.rds.amazonaws.com", database="wms_bd", user="wms", password="Master100")
 
     cursor =conn.cursor()
 
-    sql= 'INSERT INTO "Reposicao"."cadusuarios" ("codigo", "nome", "senha", "situacao") VALUES (%s, %s, %s, %s)'
-    VALORES = (Codigo, Nome, Senha, Situacao)
+    sql= 'INSERT INTO "Reposicao"."cadusuarios" ("codigo", "nome", "senha", "situacao", "funcao") VALUES (%s, %s, %s, %s, %s)'
+    VALORES = (Codigo, Nome, Senha, Situacao, Funcao)
     cursor.execute(sql, VALORES)
     conn.commit()
     cursor.close()
@@ -41,21 +41,22 @@ def Funcao_Inserir_Usuarios (Codigo, Nome, Senha, Situacao):
 
 #Funcao_Inserir_Usuarios(2, "João Victor", "Master100", "ATIVO")
 
-def Funcao_Atualizar_Usuarios (Codigo, Nome, Senha, Situacao):
+def Funcao_Atualizar_Usuarios (Codigo, Nome, Senha, Situacao, Funcao):
 
     conn =psycopg2.connect( host="wmsbd.cyiuowfro4wv.sa-east-1.rds.amazonaws.com", database="wms_bd", user="wms", password="Master100")
 
     cursor =conn.cursor()
 
-    sql= 'UPDATE "Reposicao".cadusuarios SET nome= %s, senha= %s, situacao= %s where codigo= %s ;'
-    VALORES = (Nome, Senha, Situacao, Codigo)
+    sql= 'UPDATE "Reposicao".cadusuarios SET nome= %s, senha= %s, situacao= %s, funcao= %s where codigo= %s ;'
+    VALORES = (Nome, Senha, Situacao, Funcao, Codigo)
     cursor.execute(sql, VALORES)
     conn.commit()
     cursor.close()
 
     conn.close()
-    # return Funcao_Inserir
+    #return Funcao_Inserir
 
+#Funcao_Atualizar_Usuarios(200, "GRASIELLE", "M", "INATIVO", "COLABORADOR")
 
 
 def pesquisarPedido(Pedido):

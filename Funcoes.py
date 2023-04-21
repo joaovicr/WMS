@@ -319,7 +319,7 @@ def PesquisaSenhaColaborador(codigo):
 
 
 
-#PesquisaSenhaColaborador(1)
+#PesquisaSenhaColaborador(2)
 
 
 def PesquisaSituacaoColaborador(codigo):
@@ -342,6 +342,82 @@ def PesquisaSituacaoColaborador(codigo):
 
 
 #PesquisaSituacaoColaborador(1)
+
+def PesquisasFuncaoColaborador(codigo):
+    conn =psycopg2.connect(host="wmsbd.cyiuowfro4wv.sa-east-1.rds.amazonaws.com", database="wms_bd", user="wms", password="Master100")
+    consulta = 'SELECT "codigo", "nome", "senha", "situacao", "funcao"  from "Reposicao"."cadusuarios"  WHERE "codigo" = %s'
+    valor = (codigo,)
+    cursor = conn.cursor()
+    cursor.execute(consulta, valor)
+    resultados = []
+
+    for row in cursor:
+        resultados.append([row[4]])
+        resultados = str(resultados[0][0])
+    print(resultados)
+    conn.close()
+
+
+    return resultados
+
+
+
+#PesquisaSituacaoColaborador(1)
+
+def PesquisaNomeColaboradorAtivo(situacao, codigo):
+    conn =psycopg2.connect(host="wmsbd.cyiuowfro4wv.sa-east-1.rds.amazonaws.com", database="wms_bd", user="wms", password="Master100")
+    consulta = 'SELECT "codigo", "nome", "senha", "situacao"  from "Reposicao"."cadusuarios"  WHERE "situacao" = %s and "codigo" = %s'
+    valor = (situacao, codigo,)
+    cursor = conn.cursor()
+    cursor.execute(consulta, valor)
+    resultados = []
+
+    for row in cursor:
+        resultados.append([row[0]])
+        resultados = str(resultados[0][0])
+    print(resultados)
+    conn.close()
+
+    return resultados
+
+#PesquisaNomeColaboradorAtivo("ATIVO", 1)
+
+def PesquisaSenhaColaborador2(situacao, codigo):
+    conn =psycopg2.connect(host="wmsbd.cyiuowfro4wv.sa-east-1.rds.amazonaws.com", database="wms_bd", user="wms", password="Master100")
+    consulta = 'SELECT "codigo", "nome", "senha", "situacao"  from "Reposicao"."cadusuarios"  WHERE "situacao" = %s and "codigo" = %s'
+    valor = (situacao, codigo,)
+    cursor = conn.cursor()
+    cursor.execute(consulta, valor)
+    resultados = []
+
+    for row in cursor:
+        resultados.append([row[2]])
+        resultados = str(resultados[0][0])
+    print(resultados)
+    conn.close()
+
+    return resultados
+
+#PesquisaNomeColaboradorAtivo("ATIVO", 1)
+
+def PesquisaPermissaoColaborador(situacao, codigo):
+    conn =psycopg2.connect(host="wmsbd.cyiuowfro4wv.sa-east-1.rds.amazonaws.com", database="wms_bd", user="wms", password="Master100")
+    consulta = 'SELECT "codigo", "nome", "senha", "situacao", "funcao"  from "Reposicao"."cadusuarios"  WHERE "situacao" = %s and "codigo" = %s'
+    valor = (situacao, codigo,)
+    cursor = conn.cursor()
+    cursor.execute(consulta, valor)
+    resultados = []
+
+    for row in cursor:
+        resultados.append([row[4]])
+        resultados = str(resultados[0][0])
+    print(resultados)
+    conn.close()
+
+    return resultados
+
+#PesquisaNomeColaboradorAtivo("ATIVO", 1)
+
 
 
 
