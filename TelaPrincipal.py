@@ -1,4 +1,5 @@
 import Funcoes
+import TelaSeparacaoRetornaOperador
 import Tela_Cad_Usuario
 import Tela_Consultar_Enderecos
 from tkinter import ttk
@@ -119,6 +120,8 @@ def Tela_Principal():
     # Cria o botão com a imagem
     botaoseparacao = ttk.Button(TelaBaixo, image=photoseparacao, command=lambda: TelaSeparacaoRetorna.FuncaoListaPedidos(TelaInicial))
 
+    botaoseparacaoOperador = ttk.Button(TelaBaixo, image=photoseparacao, command=lambda: TelaSeparacaoRetornaOperador.FuncaoListaPedidos(TelaInicial))
+
 
     botaoreposicao = ttk.Button(TelaBaixo, image=photoreposicao, command=lambda: TelaReposicao.FuncaoReposicao(TelaInicial))
 
@@ -210,7 +213,7 @@ def Tela_Principal():
                     else:
                         botaoEnderecamento.pack(side='left', anchor=N, padx=(300, 0), pady=(0, 0))
                         botaoreposicao.pack(side='left', anchor=N, padx=(150, 0), pady=(0, 0))
-                        botaoseparacao.pack(side='left', anchor=N, padx=(150, 0), pady=(0, 0))
+                        botaoseparacaoOperador.pack(side='left', anchor=N, padx=(150, 0), pady=(0, 0))
                         Entry_Nome.pack_forget()
                         Entry_Senha.pack_forget()
                         labelERRO.pack_forget()

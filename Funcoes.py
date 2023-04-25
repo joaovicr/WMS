@@ -408,6 +408,7 @@ def PesquisaPermissaoColaborador(situacao, codigo):
     cursor.execute(consulta, valor)
     resultados = []
 
+
     for row in cursor:
         resultados.append([row[4]])
         resultados = str(resultados[0][0])
